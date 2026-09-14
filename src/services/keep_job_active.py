@@ -7,14 +7,15 @@ Date:          2026-08-28
 import os
 import random
 
-from src.config import KEEP_JOB_ACTIVE_PATH
+from config import KEEP_JOB_ACTIVE_PATH
 
 
 # Funcion para mantener el flujo habilitado creando diferencias en el repositorio y crear commits artificiales
 def keep_job_active(save_path: str = KEEP_JOB_ACTIVE_PATH):
 
-    if not os.path.exists(os.path.dirname(save_path)):
-        os.makedirs(os.path.dirname(save_path))
+    directory = os.path.dirname(save_path)
+    if directory and not os.path.exists(directory):
+        os.makedirs(directory)
 
     # Crea un archivo con un numero aleatorio
     number = random.random()

@@ -9,7 +9,7 @@ import os
 import sqlite3
 from zoneinfo import ZoneInfo
 
-from src.config import LOG_DELIVERIES_PATH
+from config import LOG_DELIVERIES_PATH
 
 
 class LogService:
