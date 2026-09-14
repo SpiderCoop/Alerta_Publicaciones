@@ -35,14 +35,14 @@ jobs:
         enable-cache: true
 
     - name: Instalar dependencias
-      run: uv sync --locked
+      run: uv sync --locked --no-dev
 
     - name: Run script
       env:
         Cuenta: ${{ secrets.CUENTA_CORREO }}
         password: ${{ secrets.PASSWORD_CUENTA }}
         Destinatarios: ${{ secrets.DESTINATARIOS }}
-      run: uv run python -m src.main
+      run: uv run src/main.py
 
     - name: Commit and push changes
       run: |
