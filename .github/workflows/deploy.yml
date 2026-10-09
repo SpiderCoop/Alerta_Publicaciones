@@ -2,7 +2,7 @@ name: Deploy and Run Script
 
 on:
   schedule:
-    - cron: '0,30 8-10 * * 1-5'
+    - cron: '0,30 7-10 * * 1-5'
       timezone: 'America/Mexico_City'
     - cron: '0,30 12-14 * * 1-5'
       timezone: 'America/Mexico_City'
@@ -35,14 +35,17 @@ jobs:
         enable-cache: true
 
     - name: Instalar dependencias
-      run: uv sync --locked
+      run: uv sync --locked --no-dev
 
     - name: Run script
       env:
-        Cuenta: ${{ secrets.CUENTA_CORREO }}
-        password: ${{ secrets.PASSWORD_CUENTA }}
-        Destinatarios: ${{ secrets.DESTINATARIOS }}
-      run: uv run python -m src.main
+        CORREO: ${{ secrets.CUENTA_CORREO }}
+        PASSWORD: ${{ secrets.PASSWORD_CUENTA }}
+        RECIPIENTS_TO: ${{ secrets.RECIPIENTS_TO }}
+        RECIPIENTS_CC: ${{ secrets.RECIPIENTS_CC }}
+        RECIPIENTS_BCC: ${{ secrets.RECIPIENTS_BCC }}
+
+      run: uv run src/main.py
 
     - name: Commit and push changes
       run: |

@@ -6,12 +6,13 @@ Date:          2026-08-29
 
 import pandas as pd
 
-from src.config import RECIPIENTS
-from src.dof.email_body import create_email_body
-from src.dof.web_scrapper import obtener_publicaciones_dof
-from src.services.clean_text import clean_text
-from src.services.email_manager import email
-from src.services.log_service import LogService
+from publicaciones.dof.email_body import create_email_body
+from publicaciones.dof.web_scrapper import obtener_publicaciones_dof
+from services.clean_text import clean_text
+from services.email_manager import email
+from services.log_service import LogService
+
+from config import RECIPIENTS
 
 
 def enviar_publicaciones_dof(date: pd.Timestamp | None = None):

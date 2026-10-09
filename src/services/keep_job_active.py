@@ -7,7 +7,7 @@ Date:          2026-08-28
 import os
 import random
 
-from src.config import KEEP_JOB_ACTIVE_PATH
+from config import KEEP_JOB_ACTIVE_PATH
 
 
 # Funcion para mantener el flujo habilitado creando diferencias en el repositorio y crear commits artificiales
