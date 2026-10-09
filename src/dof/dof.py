@@ -6,8 +6,8 @@ Date:          2026-08-29
 
 import pandas as pd
 
-from publicaciones.dof.email_body import create_email_body
-from publicaciones.dof.web_scrapper import obtener_publicaciones_dof
+from dof.email_body import create_email_body
+from dof.web_scrapper import obtener_publicaciones_dof
 from services.clean_text import clean_text
 from services.email_manager import email
 from services.log_service import LogService

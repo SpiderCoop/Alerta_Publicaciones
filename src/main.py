@@ -4,10 +4,10 @@ Author:        David Jiménez Cooper - SpiderCoop
 Date:          2026-08-29
 """
 
-from publicaciones.consulta_publica_banxico.consulta_publica_banxico import (
+from consulta_publica_banxico.consulta_publica_banxico import (
     enviar_consultas_banxico,
 )
-from publicaciones.dof.dof import enviar_publicaciones_dof
+from dof.dof import enviar_publicaciones_dof
 from services.keep_job_active import keep_job_active
 
 keep_job_active()  # funcion auxiliar para mantener habilitado el flujo

@@ -7,8 +7,8 @@ Date:          2026-08-29
 import os
 
 
-from publicaciones.consulta_publica_banxico.email_body import create_email_body
-from publicaciones.consulta_publica_banxico.web_scrapper import obtener_consultas_banxico
+from consulta_publica_banxico.email_body import create_email_body
+from consulta_publica_banxico.web_scrapper import obtener_consultas_banxico
 from services.clean_text import clean_text
 from services.download_service import download_file
 from services.email_manager import email
