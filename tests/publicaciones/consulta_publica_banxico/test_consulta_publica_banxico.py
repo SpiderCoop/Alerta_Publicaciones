@@ -2,7 +2,7 @@ from unittest.mock import Mock, patch
 
 import pandas as pd
 
-from consulta_publica_banxico import consulta_publica_banxico as module
+from publicaciones.consulta_publica_banxico import consulta_publica_banxico as module
 
 
 def test_enviar_consultas_banxico_does_nothing_when_there_are_no_current_publications():

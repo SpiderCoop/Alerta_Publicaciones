@@ -1,4 +1,4 @@
-from consulta_publica_banxico.email_body import create_email_body
+from publicaciones.consulta_publica_banxico.email_body import create_email_body
 
 
 def test_create_email_body_returns_subject_and_html_body():

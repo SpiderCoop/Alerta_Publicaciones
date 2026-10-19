@@ -7,7 +7,7 @@ def test_main_runs_keep_alive_and_publication_workflow_once():
     with (
         patch("services.keep_job_active.keep_job_active") as keep_job_active,
         patch(
-            "consulta_publica_banxico.consulta_publica_banxico.enviar_consultas_banxico"
+            "publicaciones.consulta_publica_banxico.consulta_publica_banxico.enviar_consultas_banxico"
         ) as send_consultations,
     ):
         # Act

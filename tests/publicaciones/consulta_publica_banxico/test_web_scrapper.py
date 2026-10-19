@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 import pytest
 from selenium.common.exceptions import NoSuchElementException
 
-from consulta_publica_banxico.web_scrapper import obtener_consultas_banxico
+from publicaciones.consulta_publica_banxico.web_scrapper import obtener_consultas_banxico
 
 
 class FakeElement:
@@ -46,11 +46,11 @@ def test_obtener_consultas_banxico_returns_valid_rows_and_quits_driver():
     # Act
     with (
         patch(
-            "consulta_publica_banxico.web_scrapper.driver_configuration",
+            "publicaciones.consulta_publica_banxico.web_scrapper.driver_configuration",
             return_value=driver,
         ),
         patch(
-            "consulta_publica_banxico.web_scrapper.WebDriverWait.until",
+            "publicaciones.consulta_publica_banxico.web_scrapper.WebDriverWait.until",
             side_effect=lambda _condition: next(wait_results),
         ),
     ):
@@ -85,11 +85,11 @@ def test_obtener_consultas_banxico_uses_historical_tab_when_requested():
     # Act
     with (
         patch(
-            "consulta_publica_banxico.web_scrapper.driver_configuration",
+            "publicaciones.consulta_publica_banxico.web_scrapper.driver_configuration",
             return_value=driver,
         ),
         patch(
-            "consulta_publica_banxico.web_scrapper.WebDriverWait.until",
+            "publicaciones.consulta_publica_banxico.web_scrapper.WebDriverWait.until",
             side_effect=lambda _condition: next(wait_results),
         ),
     ):
@@ -106,11 +106,11 @@ def test_obtener_consultas_banxico_wraps_tab_errors_and_quits_driver():
     driver = Mock()
     with (
         patch(
-            "consulta_publica_banxico.web_scrapper.driver_configuration",
+            "publicaciones.consulta_publica_banxico.web_scrapper.driver_configuration",
             return_value=driver,
         ),
         patch(
-            "consulta_publica_banxico.web_scrapper.WebDriverWait.until",
+            "publicaciones.consulta_publica_banxico.web_scrapper.WebDriverWait.until",
             side_effect=RuntimeError("timeout"),
         ),
         pytest.raises(ValueError, match="Error al hacer click en la tab"),
@@ -142,11 +142,11 @@ def test_obtener_consultas_banxico_wraps_content_errors_and_quits_driver():
     # Act and Assert
     with (
         patch(
-            "consulta_publica_banxico.web_scrapper.driver_configuration",
+            "publicaciones.consulta_publica_banxico.web_scrapper.driver_configuration",
             return_value=driver,
         ),
         patch(
-            "consulta_publica_banxico.web_scrapper.WebDriverWait.until",
+            "publicaciones.consulta_publica_banxico.web_scrapper.WebDriverWait.until",
             side_effect=wait_until,
         ),
         pytest.raises(ValueError, match="Error al buscar los elementos"),
@@ -211,11 +211,11 @@ def test_obtener_consultas_banxico_ignores_items_without_required_fields():
     # Act
     with (
         patch(
-            "consulta_publica_banxico.web_scrapper.driver_configuration",
+            "publicaciones.consulta_publica_banxico.web_scrapper.driver_configuration",
             return_value=driver,
         ),
         patch(
-            "consulta_publica_banxico.web_scrapper.WebDriverWait.until",
+            "publicaciones.consulta_publica_banxico.web_scrapper.WebDriverWait.until",
             side_effect=lambda _condition: next(wait_results),
         ),
     ):
