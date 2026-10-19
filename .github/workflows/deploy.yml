@@ -2,11 +2,11 @@ name: Deploy and Run Script
 
 on:
   schedule:
-    - cron: '0,30 7-10 * * 1-5'
+    - cron: '12 7-10 * * 1-5'
       timezone: 'America/Mexico_City'
-    - cron: '0,30 12-14 * * 1-5'
+    - cron: '12 12-14 * * 1-5'
       timezone: 'America/Mexico_City'
-    - cron: '0,30 16-18 * * 1-5'
+    - cron: '12 16-18 * * 1-5'
       timezone: 'America/Mexico_City'
 
   workflow_dispatch:
