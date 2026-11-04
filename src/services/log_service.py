@@ -33,31 +33,41 @@ class LogService:
                 CREATE TABLE IF NOT EXISTS deliveries (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     publication_name TEXT NOT NULL,
+                    publication_date TIMESTAMP NOT NULL,
                     deliver_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     status TEXT DEFAULT 'SUCCESS'
                 )
                 """
             )
 
-    def log_delivery(self, publication_name: str) -> None:
+    def log_delivery(
+        self, publication_name: str, publication_date: dt.datetime
+    ) -> None:
         with self._get_connection() as conn:
             conn.execute(
                 """
-                INSERT INTO deliveries (publication_name, deliver_date)
-                VALUES (?, ?)
+                INSERT INTO deliveries (publication_name, publication_date, deliver_date)
+                VALUES (?, ?, ?)
                 """,
                 (
                     publication_name,
+                    publication_date.isoformat(),
                     dt.datetime.now(ZoneInfo("America/Mexico_City")).isoformat(),
                 ),
             )
 
-    def check_delivery(self, publication_name: str) -> bool:
+    def check_delivery(
+        self, publication_name: str, publication_date: dt.datetime | None = None
+    ) -> bool:
         """Returns True if the publication has already been delivered, False otherwise."""
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "SELECT 1 FROM deliveries WHERE publication_name = ? LIMIT 1",
-                (publication_name,),
+                "SELECT 1 FROM deliveries WHERE publication_name = ? AND publication_date = ? LIMIT 1"
+                if publication_date
+                else "SELECT 1 FROM deliveries WHERE publication_name = ? LIMIT 1",
+                (publication_name, publication_date.isoformat())
+                if publication_date
+                else (publication_name,),
             )
             return cursor.fetchone() is not None
