@@ -20,3 +20,4 @@ KEEP_JOB_ACTIVE_PATH = "logs/keep_active.txt"
 
 # Zona horaria para estandarizar fechas y horas en la aplicación
 TIMEZONE = os.getenv("TIMEZONE", "America/Mexico_City")
+DATE = os.getenv("DATE", "")

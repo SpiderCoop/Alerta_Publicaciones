@@ -39,12 +39,9 @@ def enviar_consultas_banxico(force_send: bool = False):
             fecha_limite = row["fecha_limite"]
 
             # Verificamos si ya se ha enviado un correo para esta consulta (parametrizado por si se quiere enviar de todas maneras)
-            if force_send:
-                delivered = False
-            else:
-                delivered = log_service.check_delivery(nombre_consulta)
+            delivered = log_service.check_delivery(nombre_consulta)
 
-            if not delivered:
+            if not delivered or force_send:
                 nueva_consulta = True
                 # Inicializamos una lista para guardar los nombres de los archivos descargados
                 archivos_publicacion = []
@@ -72,9 +69,10 @@ def enviar_consultas_banxico(force_send: bool = False):
                 )
 
                 # Una vez enviado, se guarda en el registro de envios para no volver a enviar el mismo archivo
-                log_service.log_delivery(
-                    nombre_consulta, dt.datetime.now(ZoneInfo(TIMEZONE)).date()
-                )
+                if not delivered:
+                    log_service.log_delivery(
+                        nombre_consulta, dt.datetime.now(ZoneInfo(TIMEZONE)).date()
+                    )
 
                 # Una vez enviado el correo, se eliminan los archivos descargados
                 for archivo in archivos_publicacion:
