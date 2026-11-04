@@ -3,7 +3,9 @@ from unittest.mock import Mock, patch
 import pytest
 from selenium.common.exceptions import NoSuchElementException
 
-from publicaciones.consulta_publica_banxico.web_scrapper import obtener_consultas_banxico
+from publicaciones.consulta_publica_banxico.web_scrapper import (
+    obtener_consultas_banxico,
+)
 
 
 class FakeElement:

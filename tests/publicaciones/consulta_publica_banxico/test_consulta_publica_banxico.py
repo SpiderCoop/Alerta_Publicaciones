@@ -1,4 +1,5 @@
-from unittest.mock import Mock, patch
+import datetime as dt
+from unittest.mock import ANY, Mock, patch
 
 import pandas as pd
 
@@ -58,7 +59,7 @@ def test_enviar_consultas_banxico_sends_new_publication_and_removes_downloads(
     # Assert
     download.assert_called_once_with(
         "https://example.test/document.pdf",
-        "Documento principal - Consulta de prueba - 31_12_2026.pdf",
+        "Documento principal - Consulta de prueba.pdf",
         module.SAVE_DOWNLOAD_DIR_PATH,
     )
     email.send.assert_called_once_with(
@@ -69,7 +70,9 @@ def test_enviar_consultas_banxico_sends_new_publication_and_removes_downloads(
         [],
         files=[str(publication_file)],
     )
-    log_service.log_delivery.assert_called_once_with("Consulta de prueba - 31_12_2026")
+    log_service.check_delivery.assert_called_once_with("Consulta de prueba")
+    log_service.log_delivery.assert_called_once_with("Consulta de prueba", ANY)
+    assert isinstance(log_service.log_delivery.call_args.args[1], dt.date)
     assert not publication_file.exists()
 
 
@@ -89,6 +92,7 @@ def test_enviar_consultas_banxico_skips_publication_already_delivered(publicatio
         module.enviar_consultas_banxico()
 
     # Assert
+    log_service.check_delivery.assert_called_once_with("Consulta de prueba")
     download.assert_not_called()
     email.send.assert_not_called()
     log_service.log_delivery.assert_not_called()

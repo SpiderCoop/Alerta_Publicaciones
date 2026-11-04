@@ -4,20 +4,25 @@ Author:        David Jiménez Cooper - SpiderCoop
 Date:          2026-08-29
 """
 
+import datetime as dt
 import os
+from zoneinfo import ZoneInfo
 
-from config import RECIPIENTS, SAVE_DOWNLOAD_DIR_PATH
+from config import RECIPIENTS, SAVE_DOWNLOAD_DIR_PATH, TIMEZONE
 from publicaciones.consulta_publica_banxico.email_body import create_email_body
-from publicaciones.consulta_publica_banxico.web_scrapper import obtener_consultas_banxico
+from publicaciones.consulta_publica_banxico.web_scrapper import (
+    obtener_consultas_banxico,
+)
 from services.clean_text import clean_text
 from services.download_service import download_file
 from services.email_manager import email
 from services.log_service import LogService
 
 
-def enviar_consultas_banxico():
+def enviar_consultas_banxico(force_send: bool = False):
     """
     Función principal para enviar consultas vigentes de Banxico por correo electrónico.
+
     """
 
     # Inicializamos el servicio de log para llevar un registro de los envios
@@ -25,24 +30,29 @@ def enviar_consultas_banxico():
 
     # Obtener las consultas vigentes
     consultas = obtener_consultas_banxico(vigentes=True)
+
+    # Iteramos sobre cada registro de consulta
     if not consultas.empty:
-        # Iteramos sobre cada registro de consulta
+        nueva_consulta = False
         for _index, row in consultas.iterrows():
             nombre_consulta = row["nombre"]
             fecha_limite = row["fecha_limite"]
-            nombre_consulta = clean_text(nombre_consulta + " - " + row["fecha_limite"])
 
-            # Verificamos si ya se ha enviado un correo para esta consulta
-            delivered = log_service.check_delivery(nombre_consulta)
+            # Verificamos si ya se ha enviado un correo para esta consulta (parametrizado por si se quiere enviar de todas maneras)
+            if force_send:
+                delivered = False
+            else:
+                delivered = log_service.check_delivery(nombre_consulta)
 
             if not delivered:
+                nueva_consulta = True
                 # Inicializamos una lista para guardar los nombres de los archivos descargados
                 archivos_publicacion = []
 
                 # Para cada consulta se revisan los documentos y si hay nuevos, se descargan
                 for nombre_documento, enlace in row["enlaces"].items():
-                    nombre_archivo = (
-                        clean_text(nombre_documento) + " - " + nombre_consulta
+                    nombre_archivo = clean_text(
+                        nombre_documento + " - " + nombre_consulta
                     )
                     nombre_archivo = nombre_archivo.replace("/", "_")[:150] + ".pdf"
                     file_path = download_file(
@@ -62,12 +72,17 @@ def enviar_consultas_banxico():
                 )
 
                 # Una vez enviado, se guarda en el registro de envios para no volver a enviar el mismo archivo
-                log_service.log_delivery(nombre_consulta)
+                log_service.log_delivery(
+                    nombre_consulta, dt.datetime.now(ZoneInfo(TIMEZONE)).date()
+                )
 
                 # Una vez enviado el correo, se eliminan los archivos descargados
                 for archivo in archivos_publicacion:
                     if os.path.exists(archivo):
                         os.remove(archivo)
+
+        if not nueva_consulta:
+            print("No se encontraron nuevas consultas de Banxico para enviar.")
 
     else:
         print("No hay consultas vigentes en Banxico en este momento.")
