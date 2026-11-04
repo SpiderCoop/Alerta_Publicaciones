@@ -15,6 +15,14 @@ on:
         description: "Ejecucion manual del flujo"
         required: false
         default: "Manual execution triggered"
+      DATE:
+        description: "Fecha de ejecución en formato YYYY-MM-DD"
+        required: false
+        default: ""
+      FORCE_SEND:
+        description: "Forzar el envío de publicaciones"
+        required: false
+        default: "true"
 
 jobs:
   deploy:
@@ -44,6 +52,9 @@ jobs:
         RECIPIENTS_TO: ${{ secrets.RECIPIENTS_TO }}
         RECIPIENTS_CC: ${{ secrets.RECIPIENTS_CC }}
         RECIPIENTS_BCC: ${{ secrets.RECIPIENTS_BCC }}
+        DATE: ${{ github.event.inputs.DATE }}
+        FORCE_SEND: ${{ github.event.inputs.FORCE_SEND }}
+        
       run: uv run src/main.py
 
     - name: Commit and push changes
