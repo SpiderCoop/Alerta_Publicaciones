@@ -2,11 +2,9 @@ name: Deploy and Run Script
 
 on:
   schedule:
-    - cron: '12 7-9 * * 1-5'
+    - cron: '19 6-7 * * 1-5'
       timezone: 'America/Mexico_City'
-    - cron: '12 13-14 * * 1-5'
-      timezone: 'America/Mexico_City'
-    - cron: '12 16-18 * * 1-5'
+    - cron: '19 17-19 * * 1-5'
       timezone: 'America/Mexico_City'
 
   workflow_dispatch:
@@ -16,7 +14,7 @@ on:
         required: false
         default: "Manual execution triggered"
       DATE:
-        description: "Fecha de ejecución en formato YYYY-MM-DD"
+        description: "Fecha de busqueda en formato YYYY-MM-DD"
         required: false
         default: ""
       FORCE_SEND:
