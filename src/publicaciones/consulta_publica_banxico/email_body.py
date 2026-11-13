@@ -1,5 +1,5 @@
 """
-Description:   Write a brief description of the script's purpose here.
+Description:   Crea el cuerpo del correo electrónico para notificar sobre nuevas publicaciones en las consultas públicas del Banco de México.
 Author:        David Jiménez Cooper - SpiderCoop
 Date:          2026-08-29
 """
@@ -12,7 +12,6 @@ def create_email_body(nombre_consulta, fecha_limite):
     Args:
         nombre_consulta (str): Nombre de la consulta pública.
         fecha_limite (str): Fecha límite de la consulta pública.
-        archivos_publicacion (list): Lista de nombres de archivos descargados.
 
     Returns:
         tuple: Asunto y cuerpo del correo electrónico.
